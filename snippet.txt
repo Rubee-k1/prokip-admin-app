@@ -1,0 +1,146 @@
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500 mb-1">
+                    employee type:
+                  </label>
+                  <select
+                    value={applyTargetType}
+                    onChange={(e) => {
+                      setApplyTargetType(e.target.value as any);
+                      setApplyIndividualId("");
+                      setEmployeeSearchQuery("");
+                    }}
+                    className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs rounded-lg focus:ring-2 focus:ring-[#02275A] focus:border-transparent outline-none text-slate-700 font-bold shadow-sm"
+                  >
+                    <option value="manager">manager</option>
+                    <option value="members">Members</option>
+                  </select>
+                </div>
+ 
+                <div 
+                  className="space-y-2 relative" 
+                  id="search-select-employee-container"
+                  onMouseLeave={() => setIsEmployeeDropdownOpen(false)}
+                >
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-500 mb-1">
+                    Select Employee (Search & Select)
+                  </label>
+                  
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Type name, role or ID to search..."
+                      value={
+                        isEmployeeDropdownOpen
+                          ? employeeSearchQuery
+                          : applyIndividualId
+                          ? (() => {
+                              const emp = employees.find((e) => e.id === applyIndividualId);
+                              return emp ? `${emp.firstName} ${emp.lastName} (${emp.role})` : "";
+                            })()
+                          : ""
+                      }
+                      onChange={(e) => {
+                        setEmployeeSearchQuery(e.target.value);
+                        setIsEmployeeDropdownOpen(true);
+                        if (!e.target.value) {
+                          setApplyIndividualId("");
+                        }
+                      }}
+                      onFocus={() => setIsEmployeeDropdownOpen(true)}
+                      className="w-full bg-slate-50 border border-slate-200 pl-3 pr-10 py-2.5 text-xs rounded-lg focus:ring-2 focus:ring-[#02275A] focus:border-transparent outline-none text-slate-700 font-bold shadow-sm cursor-pointer"
+                    />
+                    <div className="absolute right-3 top-3 flex items-center gap-1.5 text-slate-400">
+                      {applyIndividualId || employeeSearchQuery ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setApplyIndividualId("");
+                            setEmployeeSearchQuery("");
+                          }}
+                          className="hover:text-red-500 transition-colors"
+                          title="Clear Selection"
+                        >
+                          <i className="fas fa-times-circle text-xs"></i>
+                        </button>
+                      ) : (
+                        <i className="fas fa-search text-[10px]"></i>
+                      )}
+                    </div>
+                  </div>
+
+                  {isEmployeeDropdownOpen && (
+                    <div className="absolute left-0 right-0 z-[110] mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-52 overflow-y-auto custom-scrollbar divide-y divide-slate-100">
+                      <div
+                        onClick={() => {
+                          setApplyIndividualId("");
+                          setEmployeeSearchQuery("");
+                          setIsEmployeeDropdownOpen(false);
+                        }}
+                        className={`p-2.5 text-xs font-bold cursor-pointer transition-colors hover:bg-slate-50 ${!applyIndividualId ? 'text-[#02275A] bg-[#02275A]/[0.02]' : 'text-slate-500'}`}
+                      >
+                        -- Apply to all in selected Employee Type --
+                      </div>
+                      {(() => {
+                        const filtered = employees.filter((emp) => {
+                          const isManager =
+                            emp.role.toLowerCase().includes("manager") ||
+                            emp.role.toLowerCase().includes("lead") ||
+                            emp.role.toLowerCase().includes("director") ||
+                            emp.role.toLowerCase().includes("admin") ||
+                            emp.is_team_lead === true;
+                          const matchType =
+                            applyTargetType === "manager"
+                              ? isManager
+                              : !isManager;
+
+                          if (!matchType) return false;
+
+                          if (!employeeSearchQuery) return true;
+                          const name = `${emp.firstName} ${emp.lastName}`.toLowerCase();
+                          const role = emp.role.toLowerCase();
+                          const empId = emp.employeeId.toLowerCase();
+                          const query = employeeSearchQuery.toLowerCase();
+                          return (
+                            name.includes(query) ||
+                            role.includes(query) ||
+                            empId.includes(query)
+                          );
+                        });
+
+                        if (filtered.length === 0) {
+                          return (
+                            <div className="p-3 text-xs text-slate-400 text-center font-medium">
+                              No matching staff found
+                            </div>
+                          );
+                        }
+
+                        return filtered.map((emp) => {
+                          const isSelected = applyIndividualId === emp.id;
+                          return (
+                            <div
+                              key={emp.id}
+                              onClick={() => {
+                                setApplyIndividualId(emp.id);
+                                setEmployeeSearchQuery(`${emp.firstName} ${emp.lastName}`);
+                                setIsEmployeeDropdownOpen(false);
+                              }}
+                              className={`p-2.5 text-xs font-bold cursor-pointer transition-colors flex justify-between items-center ${isSelected ? 'bg-[#02275A]/[0.04] text-[#02275A]' : 'hover:bg-slate-50 text-slate-700'}`}
+                            >
+                              <div>
+                                <span className="block font-bold">{emp.firstName} {emp.lastName}</span>
+                                <span className="block text-[10px] text-slate-400 font-medium">
+                                  {emp.role} • {emp.employeeId}
+                                </span>
+                              </div>
+                              {isSelected && <i className="fas fa-check text-[#02275A] text-2xs"></i>}
+                            </div>
+                          );
+                        });
+                      })()}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>

@@ -1,0 +1,209 @@
+                                    <input 
+                                        type="text" 
+                                        placeholder="Search employee name, ID or role..."
+                                        value={searchQuery}
+                                        onChange={e => setSearchQuery(e.target.value)}
+                                        className="w-full bg-white pl-9 pr-4 py-1.5 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-indigo-500"
+--
+                                                <input 
+                                                    type="number" 
+                                                    placeholder="Award amount e.g. +10"
+                                                    value={pointsDelta}
+                                                    onChange={e => setPointsDelta(e.target.value)}
+                                                    className="flex-1 bg-white px-3 py-1.5 rounded-lg border border-slate-200 text-xs text-center font-bold placeholder:font-normal placeholder:text-[10px] focus:outline-[#02275A] focus:outline-1"
+--
+                                                    <input 
+                                                        type="number"
+                                                        name="pointsVal"
+                                                        required
+                                                        min="1"
+                                                        max="100"
+--
+                                                    <input 
+                                                        type="text"
+                                                        name="pointsNote"
+                                                        required
+                                                        placeholder="e.g. Led high-impact client presentation, covered peer's shift, customer call citation"
+                                                        className="w-full bg-slate-50 border border-slate-200 p-2.5 text-xs rounded-xl focus:ring-1 focus:ring-indigo-500 outline-none font-bold text-slate-700"
+--
+                                            <input 
+                                                type="number"
+                                                className="w-full bg-slate-50 border border-slate-200 p-2 text-xs rounded-xl focus:ring-1 focus:ring-[#02275A] outline-none font-bold text-slate-700"
+                                                value={settingsDraft.excellentMin}
+                                                onChange={(e) => setSettingsDraft({ ...settingsDraft, excellentMin: Number(e.target.value) })}
+                                            />
+--
+                                            <input 
+                                                type="number"
+                                                className="w-full bg-slate-50 border border-slate-200 p-2 text-xs rounded-xl focus:ring-1 focus:ring-[#02275A] outline-none font-bold text-slate-700"
+                                                value={settingsDraft.veryGoodMin}
+                                                onChange={(e) => setSettingsDraft({ ...settingsDraft, veryGoodMin: Number(e.target.value) })}
+                                            />
+--
+                                            <input 
+                                                type="number"
+                                                className="w-full bg-slate-50 border border-slate-200 p-2 text-xs rounded-xl focus:ring-1 focus:ring-[#02275A] outline-none font-bold text-slate-700"
+                                                value={settingsDraft.meetsExpectationsMin}
+                                                onChange={(e) => setSettingsDraft({ ...settingsDraft, meetsExpectationsMin: Number(e.target.value) })}
+                                            />
+--
+                                            <input 
+                                                type="number"
+                                                className="w-full bg-slate-50 border border-slate-200 p-2 text-xs rounded-xl focus:ring-1 focus:ring-[#02275A] outline-none font-bold text-slate-700"
+                                                value={settingsDraft.needsImprovementMin}
+                                                onChange={(e) => setSettingsDraft({ ...settingsDraft, needsImprovementMin: Number(e.target.value) })}
+                                            />
+--
+                                                <input 
+                                                    type="range" 
+                                                    min="50" 
+                                                    max="100" 
+                                                    step="5"
+                                                    className="w-full accent-[#02275A]"
+--
+                                                <input 
+                                                    type="range" 
+                                                    min="0" 
+                                                    max="50" 
+                                                    step="5"
+                                                    className="w-full accent-[#02275A]"
+--
+                                                <input 
+                                                    type="number"
+                                                    className="w-32 bg-slate-50 border border-slate-200 p-2 text-xs rounded-xl focus:ring-1 focus:ring-[#02275A] outline-none font-bold text-slate-700"
+                                                    value={settingsDraft.kpiCapLimit}
+                                                    onChange={(e) => setSettingsDraft({ ...settingsDraft, kpiCapLimit: Number(e.target.value) })}
+                                                />
+--
+                                            <input 
+                                                type="range" 
+                                                min="10" 
+                                                max="100" 
+                                                step="5"
+                                                className="w-full accent-rose-600"
+--
+                                                <input 
+                                                    type="number"
+                                                    className="w-full bg-slate-50 border border-slate-200 p-2 text-xs rounded-xl focus:ring-1 focus:ring-[#02275A] outline-none font-bold text-slate-700"
+                                                    value={settingsDraft.milestoneRewardPoints}
+                                                    onChange={(e) => setSettingsDraft({ ...settingsDraft, milestoneRewardPoints: Number(e.target.value) })}
+                                                />
+--
+                                                <input 
+                                                    type="number"
+                                                    className="w-full bg-slate-50 border border-slate-200 p-2 text-xs rounded-xl focus:ring-1 focus:ring-[#02275A] outline-none font-bold text-slate-700"
+                                                    value={settingsDraft.heroAwardPoints}
+                                                    onChange={(e) => setSettingsDraft({ ...settingsDraft, heroAwardPoints: Number(e.target.value) })}
+                                                />
+--
+                                            <input 
+                                                type="text"
+                                                required
+                                                placeholder="e.g. Senior Frontend Engineer Blueprint"
+                                                value={templateName}
+                                                onChange={e => setTemplateName(e.target.value)}
+--
+                                            <input 
+                                                type="text"
+                                                placeholder="e.g. Software Engineer"
+                                                value={templateRole}
+                                                onChange={e => {
+                                                    const val = e.target.value;
+--
+                                            <input 
+                                                type="text"
+                                                placeholder="e.g. Engineering"
+                                                value={templateDepartment}
+                                                onChange={e => {
+                                                    const val = e.target.value;
+--
+                                            <input 
+                                                type="number"
+                                                max="100"
+                                                min="10"
+                                                value={templateRoleLimit}
+                                                onChange={e => setTemplateRoleLimit(Number(e.target.value))}
+--
+                                            <input 
+                                                type="number"
+                                                max="90"
+                                                min="0"
+                                                value={templateConductLimit}
+                                                onChange={e => setTemplateConductLimit(Number(e.target.value))}
+--
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="KPI Name (e.g. Sales volume)" 
+                                                        value={kpiItemName}
+                                                        onChange={e => setKpiItemName(e.target.value)}
+                                                        className="bg-white text-xs border border-slate-250 p-1.5 rounded-xl outline-none col-span-2 font-bold text-slate-700"
+--
+                                                        <input 
+                                                            type="number" 
+                                                            value={kpiItemWeight} 
+                                                            onChange={e => setKpiItemWeight(Number(e.target.value))}
+                                                            className="w-full bg-white text-xs border border-slate-200 p-1 rounded-xl text-slate-700 font-bold"
+                                                        />
+--
+                                                        <input 
+                                                            type="number" 
+                                                            value={kpiItemTarget} 
+                                                            onChange={e => setKpiItemTarget(Number(e.target.value))}
+                                                            className="w-full bg-white text-xs border border-slate-200 p-1 rounded-xl text-slate-700 font-bold"
+                                                        />
+--
+                                                        <input 
+                                                            type="text" 
+                                                            placeholder="$ or %" 
+                                                            value={kpiItemUnit} 
+                                                            onChange={e => setKpiItemUnit(e.target.value)}
+                                                            className="w-full bg-white text-xs border border-slate-200 p-1 rounded-xl text-slate-700 font-bold"
+--
+                                                        <input 
+                                                            type="number" 
+                                                            value={kpiItemCap} 
+                                                            onChange={e => setKpiItemCap(Number(e.target.value))}
+                                                            className="w-full bg-white text-xs border border-slate-200 p-1 rounded-xl text-slate-700 font-bold"
+                                                        />
+--
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Conduct Area name (e.g. Communication)" 
+                                                        value={conductItemName}
+                                                        onChange={e => setConductItemName(e.target.value)}
+                                                        className="bg-white text-xs border border-slate-250 p-1.5 rounded-xl outline-none col-span-2 font-bold text-slate-700"
+--
+                                                        <input 
+                                                            type="number" 
+                                                            value={conductItemWeight} 
+                                                            onChange={e => setConductItemWeight(Number(e.target.value))}
+                                                            className="w-full bg-white text-xs border border-slate-200 p-1 rounded-xl text-slate-700 font-bold"
+                                                        />
+--
+                                                        <input 
+                                                            type="number" 
+                                                            value={conductItemTarget} 
+                                                            onChange={e => setConductItemTarget(Number(e.target.value))}
+                                                            className="w-full bg-white text-xs border border-slate-200 p-1 rounded-xl text-slate-700 font-bold"
+                                                        />
+--
+                                                        <input 
+                                                            type="text" 
+                                                            value={conductItemUnit} 
+                                                            onChange={e => setConductItemUnit(e.target.value)}
+                                                            className="w-full bg-white text-xs border border-slate-200 p-1 rounded-xl text-slate-700 font-bold"
+                                                        />
+--
+                                                    <input 
+                                                        type="text"
+                                                        placeholder="e.g. Sales, Marketer, Support"
+                                                        value={applyTargetRole}
+                                                        onChange={e => setApplyTargetRole(e.target.value)}
+                                                        className="w-full bg-slate-50 border border-slate-200 p-2 text-xs rounded-lg focus:ring-1 focus:ring-indigo-500 outline-none text-slate-700 font-bold"
+--
+                                                    <input 
+                                                        type="text"
+                                                        placeholder="e.g. Marketing, Engineering"
+                                                        value={applyTargetDept}
+                                                        onChange={e => setApplyTargetDept(e.target.value)}
+                                                        className="w-full bg-slate-50 border border-slate-200 p-2 text-xs rounded-lg focus:ring-1 focus:ring-indigo-500 outline-none text-slate-700 font-bold"

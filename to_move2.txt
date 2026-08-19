@@ -1,0 +1,113 @@
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50/80 p-4 rounded-2xl border border-slate-200/80">
+                        <div>
+                          <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5 font-sans">
+                            <i className="far fa-calendar-alt text-amber-600"></i>
+                            <span>Review Quarter / Period</span>
+                          </label>
+                          <div className="w-full px-4 py-2.5 bg-white border border-slate-200 text-slate-900 text-sm font-black rounded-xl flex items-center justify-between shadow-sm">
+                            <span>{activeQuarter}</span>
+                            <span className="bg-amber-50 text-amber-800 border border-amber-200/60 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                              Active
+                            </span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5 font-sans">
+                            <i className="far fa-clock text-slate-700"></i>
+                            <span>Review Type Frequency *</span>
+                          </label>
+                          <select
+                            value={reviewType}
+                            onChange={(e) => {
+                              const val = e.target.value as "weekly" | "monthly";
+                              setReviewType(val);
+                              setReviewDateType(val as any);
+                            }}
+                            className="w-full px-4 py-2.5 bg-white border border-slate-200 text-slate-800 text-sm rounded-xl hover:border-slate-300 transition-all focus:outline-none focus:ring-2 focus:ring-slate-900/10 font-bold font-sans cursor-pointer shadow-sm"
+                          >
+                            <option value="weekly">Weekly Evaluation Record</option>
+                            <option value="monthly">Monthly Performance Evaluation</option>
+                          </select>
+                        </div>
+                      </div>
+
+                  {(reviewType === "weekly" || reviewType === "monthly") && (
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4 animate-fade-in text-left">
+                      <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider flex items-center gap-1.5 border-b border-slate-200 pb-2">
+                        <i className="far fa-calendar-check text-slate-700"></i> {reviewType === "weekly" ? "Weekly Review Specifications" : "Monthly Review Specifications"}
+                      </h4>
+                      <div className={`grid grid-cols-1 ${reviewType === "weekly" ? "md:grid-cols-3" : "md:grid-cols-2"} gap-4`}>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-650 uppercase mb-1.5">
+                            Year *
+                          </label>
+                          <select
+                            value={weeklyYear}
+                            onChange={(e) => setWeeklyYear(e.target.value)}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10 font-semibold cursor-pointer"
+                          >
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-650 uppercase mb-1.5">
+                            Month *
+                          </label>
+                          <select
+                            value={weeklyMonth}
+                            onChange={(e) => setWeeklyMonth(e.target.value)}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10 font-semibold cursor-pointer"
+                          >
+                            {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map((m) => (
+                              <option key={m} value={m}>{m}</option>
+                            ))}
+                          </select>
+                        </div>
+                        {reviewType === "weekly" && (
+                          <div>
+                            <label className="block text-xs font-bold text-slate-650 uppercase mb-1.5">
+                              Week *
+                            </label>
+                            <select
+                              value={weeklyWeek}
+                              onChange={(e) => setWeeklyWeek(e.target.value)}
+                              className="w-full px-3 py-2 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10 font-semibold cursor-pointer"
+                            >
+                              {Array.from({ length: getWeeksInMonth(weeklyYear, weeklyMonth) }).map((_, i) => (
+                                <option key={i} value={`Week ${i + 1}`}>Week {i + 1}</option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-650 uppercase mb-1.5">
+                          {reviewType === "weekly" ? "Weekly Comments *" : "Monthly Comments *"}
+                        </label>
+                        <textarea
+                          required
+                          rows={3}
+                          placeholder={reviewType === "weekly" ? "Please enter the detailed weekly evaluation comments..." : "Please enter the detailed monthly evaluation comments..."}
+                          value={weeklyComments}
+                          onChange={(e) => setWeeklyComments(e.target.value)}
+                          className="w-full px-4 py-2 bg-white border border-slate-200 text-slate-700 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900/10 font-sans leading-relaxed"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedEmp && reviewType === "weekly" && (() => {
+                    const currentMonthWeeklyReviews = (selectedEmp.weeklyReviews || []).filter(
+                      (r: any) => String(r.year) === String(weeklyYear) && String(r.month) === String(weeklyMonth)
+                    );
+                    const requiredWeeksForMonth = getWeeksInMonth(weeklyYear, weeklyMonth);
+                    const uniqueWeeksRecorded = new Set(
+                      currentMonthWeeklyReviews.map((r: any) => String(r.week).toLowerCase().trim())
+                    ).size;
+                    const isAllWeeksCompleted = uniqueWeeksRecorded >= requiredWeeksForMonth;
+
+                    const existingMonthlyForMonth = (selectedEmp.monthlyReviews || []).find(

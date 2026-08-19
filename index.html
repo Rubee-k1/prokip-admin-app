@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prokip Agent App</title>
+    
+    <script>
+        // Safe Polyfill for localStorage and sessionStorage inside sandboxed iframes
+        (function() {
+            function createStorageMock() {
+                var storage = {};
+                return {
+                    setItem: function(key, value) { storage[key] = String(value); },
+                    getItem: function(key) { return storage.hasOwnProperty(key) ? storage[key] : null; },
+                    removeItem: function(key) { delete storage[key]; },
+                    clear: function() { storage = {}; },
+                    key: function(i) { return Object.keys(storage)[i] || null; },
+                    get length() { return Object.keys(storage).length; }
+                };
+            }
+
+            function polyfillStorage(type) {
+                try {
+                    var test = window[type];
+                    if (test) {
+                        test.setItem('__storage_test__', '1');
+                        test.removeItem('__storage_test__');
+                        return; // Works fine, no polyfill needed
+                    }
+                } catch (e) {
+                    // Access is blocked or threw an error
+                }
+
+                console.warn(type + " is blocked or unavailable. Falling back to in-memory storage.");
+                var mock = createStorageMock();
+                
+                // Method 1: Try redefining on Window.prototype (standard for modern browsers if window.property is read-only)
+                try {
+                    if (typeof Window !== 'undefined' && Window.prototype) {
+                        Object.defineProperty(Window.prototype, type, {
+                            get: function() { return mock; },
+                            configurable: true
+                        });
+                        return;
+                    }
+                } catch (e1) {
+                    // Failed on Window.prototype
+                }
+
+                // Method 2: Try defining directly on window object as a getter
+                try {
+                    Object.defineProperty(window, type, {
+                        get: function() { return mock; },
+                        configurable: true,
+                        enumerable: true
+                    });
+                    return;
+                } catch (e2) {
+                    // Failed on window via defineProperty
+                }
+
+                // Method 3: Try simple property assignment
+                try {
+                    window[type] = mock;
+                } catch (e3) {
+                    console.error("Critical: Could not polyfill " + type, e3);
+                }
+            }
+
+            polyfillStorage('localStorage');
+            polyfillStorage('sessionStorage');
+        })();
+    </script>
+    
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts: Plus Jakarta Sans (Neurial Grotesk Alternative) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --font-primary: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html {
+            font-size: 16px; /* Base font size as requested */
+        }
+
+        body { 
+            font-family: var(--font-primary); 
+            -webkit-tap-highlight-color: transparent;
+            
+            /* Requested Dimensions */
+            font-size: 16px;
+            width: 100%;
+            height: 100vh;
+            
+            /* Ensure layout behaves like an app */
+            overflow: hidden; 
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc; /* Slate-50 */
+            color: #0f172a; /* Slate-900 */
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Custom Fade In Animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(5px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        /* Custom Scrollbar for specific containers */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div id="root" class="h-full w-full"></div>
+    <script type="module" crossorigin src="/index.tsx"></script>
+</body>
+</html>
